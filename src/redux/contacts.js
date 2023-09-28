@@ -1,25 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-const initialState = [
-  { id: 0, text: 'Learn HTML and CSS', completed: true },
-  { id: 1, text: 'Get good at JavaScript', completed: true },
-  { id: 2, text: 'Master React', completed: false },
-  { id: 3, text: 'Discover Redux', completed: false },
-  { id: 4, text: 'Build amazing apps', completed: false },
-];
-
-const slice = createSlice({
-  name: 'contacts/addContact',
-  initialState,
+const contactsSlice = createSlice({
+  name: 'changeContacts',
+  initialState: [],
   reducers: {
-    addContact(state, action) {
-      // добавить в массив
+    addContact: {
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare(value) {
+        return {
+          payload: {
+            id: nanoid(5),
+            ...value,
+          },
+        };
+      },
     },
     deleteContact(state, action) {
-      // удалить из массива
+      state.contacts = state.contacts.filter(el => el.id !== action.payload);
     },
   },
 });
 
-export const { addContact, deleteContact } = slice.actions;
-export const changeContacts = slice.reducer;
+const persistConfig = {
+  key: 'contacts',
+  storage,
+};
+
+export const clickReducer = persistReducer(
+  persistConfig,
+  contactsSlice.reducer
+);
+
+export const { addContact, deleteContact } = contactsSlice.actions;
+export const changeContacts = contactsSlice.reducer;

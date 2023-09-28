@@ -1,4 +1,6 @@
 import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contacts';
 
 import {
   FormStyle,
@@ -7,16 +9,17 @@ import {
   ButtonStyle,
 } from './ContactsForm.styled';
 
-export const ContactForm = ({ onAdd }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values, actions) => {
+    // Перед тем как выполнить диспач нужно проверить могу ли я доавить это или нет
+    dispatch(addContact(values));
+    actions.resetForm();
+  };
   return (
     <div>
-      <Formik
-        initialValues={{ name: '', number: '' }}
-        onSubmit={(value, actions) => {
-          onAdd(value);
-          actions.resetForm();
-        }}
-      >
+      <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
         <FormStyle>
           <LabelStyle>
             Name
