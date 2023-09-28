@@ -1,6 +1,3 @@
-import { useState, useEffect, useMemo } from 'react';
-import { nanoid } from 'nanoid';
-
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
 import { ContactForm } from './FormContacts/ContactsForm';
