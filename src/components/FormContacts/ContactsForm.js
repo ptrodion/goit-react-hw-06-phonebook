@@ -13,7 +13,7 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    // Перед тем как выполнить диспач нужно проверить могу ли я доавить это или нет
+    // перед ти як додати перевірити с local storage є такє вжє їм'я чи немає.
     dispatch(addContact(values));
     actions.resetForm();
   };
