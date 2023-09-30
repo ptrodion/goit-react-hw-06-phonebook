@@ -1,6 +1,10 @@
+import { useDispatch } from 'react-redux';
 import { ContactsFilterByName, ContactsFilterTitle } from './Filter.styled';
+import { filter } from 'redux/filter';
 
-export const Filter = ({ filter, onFilter }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+  const handleFilterChange = evt => dispatch(filter(evt.target.value));
   return (
     <div>
       <ContactsFilterTitle>Contacts</ContactsFilterTitle>
@@ -8,11 +12,9 @@ export const Filter = ({ filter, onFilter }) => {
         Find contacts by name
         <ContactsFilterByName
           type="text"
-          value={filter}
-          onChange={evt => {
-            onFilter(evt.target.value);
-          }}
-        ></ContactsFilterByName>
+          name="filter"
+          onChange={handleFilterChange}
+        />
       </label>
     </div>
   );

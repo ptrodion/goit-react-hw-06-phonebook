@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
 import { clickReducer } from './contacts';
+import { filterContacts } from './filter';
 import {
   FLUSH,
   REHYDRATE,
@@ -10,12 +11,10 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-// import { filterContacts } from './filter';
-
 export const store = configureStore({
   reducer: {
     changeContacts: clickReducer,
-    // filter: filterContacts,
+    filter: filterContacts,
   },
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware({

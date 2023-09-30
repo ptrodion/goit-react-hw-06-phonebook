@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../redux/contacts';
 
 import {
@@ -12,11 +12,23 @@ import {
 export const ContactForm = () => {
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, actions) => {
-    // перед ти як додати перевірити с local storage є такє вжє їм'я чи немає.
-    dispatch(addContact(values));
+  const isNameNotUnique = (name, savedOurContacts) => {
+    return savedOurContacts.some(
+      contact => contact.name.toUpperCase() === name.toUpperCase()
+    );
+  };
+
+  const savedOurContacts = useSelector(state => state.changeContacts.items);
+
+  const handleSubmit = ({ name, number }, actions) => {
+    if (!isNameNotUnique(name, savedOurContacts)) {
+      dispatch(addContact({ name, number }));
+    } else {
+      alert(`${name} is already in contacts`);
+    }
     actions.resetForm();
   };
+
   return (
     <div>
       <Formik initialValues={{ name: '', number: '' }} onSubmit={handleSubmit}>
